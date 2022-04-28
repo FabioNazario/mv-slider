@@ -1,0 +1,2 @@
+# mv-slider
+Wordpress plugin
