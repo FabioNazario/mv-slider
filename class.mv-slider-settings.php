@@ -14,53 +14,63 @@ if (! class_exists('MV_Slider_Settings')){
             register_setting( 'mv_slider_group', 'mv_slider_options' );
 
             add_settings_section( 
-                'mv_slider_main_section',   //$id:string, 
-                'How does it work?',        //$title:string, 
-                null,                       //$callback:callable, 
-                'mv_slider_page1'           //$page:string
+                'mv_slider_main_section',   
+                'How does it work?', 
+                null,                       
+                'mv_slider_page1'           
             );
 
             add_settings_section( 
-                'mv_slider_second_section',   //$id:string, 
-                'Other Plugin Options',        //$title:string, 
-                null,                       //$callback:callable, 
-                'mv_slider_page2'           //$page:string
+                'mv_slider_second_section',  
+                'Other Plugin Options',       
+                null,                       
+                'mv_slider_page2'           
             );
 
             add_settings_field( 
-                'mv_slider_shortcode',                          //$id:string,
-                'Shortcode',                                    //$title:string, 
-                array($this, 'mv_slider_shortcode_callback'),   //$callback:callable, 
-                'mv_slider_page1',                              //$page:string, 
-                'mv_slider_main_section'                        //$section:string, 
+                'mv_slider_shortcode',                 
+                'Shortcode',                               
+                array($this, 'mv_slider_shortcode_callback'),   
+                'mv_slider_page1',  
+                'mv_slider_main_section'                     
                 //$args:array 
             );
 
             add_settings_field( 
-                'mv_slider_title',                          //$id:string,
-                'Slider Title',                                    //$title:string, 
-                array($this, 'mv_slider_title_callback'),   //$callback:callable, 
-                'mv_slider_page2',                              //$page:string, 
-                'mv_slider_second_section'                        //$section:string, 
-                                                                //$args:array 
+                'mv_slider_title',
+                'Slider Title',                               
+                array($this, 'mv_slider_title_callback'),   
+                'mv_slider_page2',                        
+                'mv_slider_second_section',                     
+                array(
+                    'label_for' => 'mv_slider_title'
+                )                                   
             );
 
             add_settings_field( 
-                'mv_slider_bullets',                          //$id:string,
-                'Display Bullets',                                    //$title:string, 
-                array($this, 'mv_slider_bullet_callback'),   //$callback:callable, 
-                'mv_slider_page2',                              //$page:string, 
-                'mv_slider_second_section'                        //$section:string, 
-                                                                //$args:array 
+                'mv_slider_bullets',                 
+                'Display Bullets',                               
+                array($this, 'mv_slider_bullet_callback'),   
+                'mv_slider_page2',                        
+                'mv_slider_second_section',                     
+                array(
+                    'label_for' => 'mv_slider_bullets'
+                )                                                   
             );
 
             add_settings_field( 
-                'mv_slider_style',                          //$id:string,
-                'Slider Style',                                    //$title:string, 
-                array($this, 'mv_slider_slyle_callback'),   //$callback:callable, 
-                'mv_slider_page2',                              //$page:string, 
-                'mv_slider_second_section'                        //$section:string, 
-                                                                //$args:array 
+                'mv_slider_style',                 
+                'Slider Style',                               
+                array($this, 'mv_slider_slyle_callback'),   
+                'mv_slider_page2',                        
+                'mv_slider_second_section',                     
+                array(
+                    'items' => array(
+                        'style-1',
+                        'style-2'
+                    ),
+                    'label_for' => 'mv_slider_style'
+                )                                                
             );
         }
         
@@ -70,7 +80,7 @@ if (! class_exists('MV_Slider_Settings')){
             <?php
         }
 
-        public function mv_slider_title_callback(){
+        public function mv_slider_title_callback($args){
             ?>
             <input 
                 type="text" 
@@ -81,7 +91,7 @@ if (! class_exists('MV_Slider_Settings')){
             <?php    
         }
 
-        public function mv_slider_bullet_callback(){
+        public function mv_slider_bullet_callback($args){
             ?>
             <input 
                 type="checkbox" 
@@ -99,26 +109,23 @@ if (! class_exists('MV_Slider_Settings')){
                 
         }
 
-        public function mv_slider_slyle_callback(){
+        public function mv_slider_slyle_callback($args){
             ?>
             <select 
                 id="mv_slider_style"
                 name="mv_slider_options[mv_slider_style]">
-                <option value="style-1"
                 <?php
-                    if (isset(self::$options['mv_slider_style'])){
-                        selected("style-1", self::$options['mv_slider_style'], true);
-                    }
-                ?>>Style-1</option>
-                <option value="style-2"
-                <?php
-                    if (isset(self::$options['mv_slider_style'])){
-                        selected("style-2", self::$options['mv_slider_style'], true);
-                    }
-                ?>>Style-2</option>
+                foreach ($args['items'] as $item):
+                    ?>
+
+                    <option value="<?php echo esc_attr($item); ?>"
+                        <?php isset(self::$options['mv_slider_style']) ? selected($item, self::$options['mv_slider_style'], true):''; ?>
+                    >
+                        <?php echo esc_html( ucfirst($item)); ?>
+                    </option>
+                <?php endforeach; ?>
             </select>
             <?php
         }
-
     }
 }
